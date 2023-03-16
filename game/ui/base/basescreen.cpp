@@ -120,7 +120,21 @@ void BaseScreen::begin()
 	    });
 	form->findControlTyped<GraphicButton>("BUTTON_BASE_ALIEN_CONTAINMENT")
 	    ->addCallback(FormEventType::ButtonClick, [this](Event *) {
-		    fw().stageQueueCommand({StageCmd::Command::PUSH, mksp<AlienContainmentScreen>(state)});
+		    if (state->current_base->inventoryBioEquipment.empty())
+		    {
+			    UString title(tr("ALIEN CONTAINMENT"));
+			    UString message(tr("Alien Containment is not in use at this base."));
+
+			    fw().stageQueueCommand(
+			        {StageCmd::Command::PUSH,
+			        mksp<MessageBox>(title, message,
+			                        MessageBox::ButtonOptions::Ok)});
+		    }
+		    else
+		    {
+			    fw().stageQueueCommand({StageCmd::Command::PUSH, mksp<AlienContainmentScreen>(state)});
+
+		    }
 	    });
 	form->findControlTyped<GraphicButton>("BUTTON_BASE_EQUIPAGENT")
 	    ->addCallback(FormEventType::ButtonClick, [this](Event *) {
