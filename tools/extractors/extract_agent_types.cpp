@@ -250,6 +250,8 @@ void InitialGameStateExtractor::extractAgentTypes(GameState &state) const
 				a->possible_genders.insert(a->possible_genders.end(), AgentType::Gender::Female);
 				a->gender_chance[AgentType::Gender::Male] = 1;
 				a->gender_chance[AgentType::Gender::Female] = 1;
+				a->species = AgentType::Species::Human;
+				
 				for (unsigned p = HUMAN_MALE_PORTRAIT_START; p < HUMAN_MALE_PORTRAIT_END; p++)
 					a->portraits[AgentType::Gender::Male][p - HUMAN_MALE_PORTRAIT_START] =
 					    portraits[p];
@@ -260,6 +262,7 @@ void InitialGameStateExtractor::extractAgentTypes(GameState &state) const
 			case UNIT_TYPE_ANDROID:
 				a->possible_genders.insert(a->possible_genders.end(), AgentType::Gender::Male);
 				a->gender_chance[AgentType::Gender::Male] = 1;
+				a->species = AgentType::Species::Android;
 				for (unsigned p = ANDROID_MALE_PORTRAIT_START; p < ANDROID_MALE_PORTRAIT_END; p++)
 					a->portraits[AgentType::Gender::Male][p - ANDROID_MALE_PORTRAIT_START] =
 					    portraits[p];
@@ -267,6 +270,7 @@ void InitialGameStateExtractor::extractAgentTypes(GameState &state) const
 			case UNIT_TYPE_GREY:
 				a->possible_genders.insert(a->possible_genders.end(), AgentType::Gender::Male);
 				a->gender_chance[AgentType::Gender::Male] = 1;
+				a->species = AgentType::Species::Hybrid;
 				for (unsigned p = HYBRID_MALE_PORTRAIT_START; p < HYBRID_MALE_PORTRAIT_END; p++)
 					a->portraits[AgentType::Gender::Male][p - HYBRID_MALE_PORTRAIT_START] =
 					    portraits[p];

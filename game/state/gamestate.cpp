@@ -712,7 +712,7 @@ void GameState::fillPlayerStartingProperty()
 	// Give starting agents and their equipment
 	for (auto &agentTypePair : this->initial_agents)
 	{
-		auto type = agentTypePair.first;
+		auto type = AgentType::Species::Android;
 		auto count = agentTypePair.second;
 		auto it = initial_agent_equipment.begin();
 		while (count > 0)

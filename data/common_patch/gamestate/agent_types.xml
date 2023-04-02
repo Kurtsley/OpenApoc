@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+ <?xml version="1.0" encoding="UTF-8"?>
 <agent_types>
   <entry>
     <key>AGENTTYPE_X-COM_AGENT_HUMAN</key>
@@ -8,6 +8,9 @@
       <role>Soldier</role>
 	  <displayRank>true</displayRank>
 	  <inventoryBackground>xcom3/tacdata/equippic/xcom.pcx</inventoryBackground>
+		<species>
+		  <entry>Human</entry>
+		</species>
       <possible_genders>
         <entry>Male</entry>
         <entry>Female</entry>
@@ -602,6 +605,9 @@
       <role>Soldier</role>
       <inventoryBackground>xcom3/tacdata/equippic/xcom.pcx</inventoryBackground>
 	  <displayRank>true</displayRank>
+		<species>
+		  <entry>Hybrid</entry>
+		</species>
 	  <possible_genders>
         <entry>Male</entry>
         <entry>Female</entry>
@@ -847,6 +853,9 @@
       <role>Soldier</role>
       <inventoryBackground>xcom3/tacdata/equippic/xcom.pcx</inventoryBackground>
 	  <displayRank>true</displayRank>
+		<species>
+		  <entry>Android</entry>
+		</species>
 	  <possible_genders>
         <entry>Male</entry>
       </possible_genders>

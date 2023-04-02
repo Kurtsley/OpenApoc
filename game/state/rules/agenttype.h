@@ -139,6 +139,12 @@ class AgentType : public StateObject<AgentType>
 		Male,
 		Female,
 	};
+	enum class Species
+	{
+		Human,
+		Hybrid,
+		Android,
+	};
 	static EquipmentSlotType getArmorSlotType(BodyPart bodyPart);
 	// Enums for animation
 
@@ -148,6 +154,7 @@ class AgentType : public StateObject<AgentType>
 	UString name;
 	Role role = Role::Soldier;
 
+	Species species = species;
 	std::set<Gender> possible_genders;
 	std::map<Gender, float> gender_chance;
 	std::map<Gender, std::map<int, AgentPortrait>> portraits;

@@ -81,6 +81,7 @@ StateRef<Agent> AgentGenerator::createAgent(GameState &state, StateRef<Organisat
 	agent->owner = org;
 	agent->type = type;
 	agent->gender = probabilityMapRandomizer(state.rng, type->gender_chance);
+	agent->species = type->species;
 
 	if (type->playable)
 	{

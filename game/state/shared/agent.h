@@ -77,6 +77,7 @@ class Agent : public StateObject<Agent>,
 	int portrait = 0;
 	const AgentPortrait &getPortrait() const { return type->portraits.at(gender).at(portrait); }
 	AgentType::Gender gender = AgentType::Gender::Male;
+	AgentType::Species species = AgentType::Species::Human;
 
 	AgentStats initial_stats;  // Stats at agent creation
 	AgentStats current_stats;  // Stats after agent training/improvement
