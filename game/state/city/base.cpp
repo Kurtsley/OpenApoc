@@ -394,6 +394,22 @@ Base::BuildError Base::canDestroyFacility(GameState &state, Vec2<int> pos) const
 	return BuildError::NoError;
 }
 
+bool Base::acontainmentEmpty(GameState &state)
+{
+	for (auto &f : facilities)
+	{
+		if (f->type->capacityType == FacilityType::Capacity::Aliens)
+		{
+			auto facility = f;
+			if (getCapacityUsed(state, facility->type->capacityType) == 0)
+			{
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
 void Base::destroyFacility(GameState &state, Vec2<int> pos)
 {
 	if (canDestroyFacility(state, pos) == BuildError::NoError)

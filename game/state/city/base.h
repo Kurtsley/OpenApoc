@@ -47,6 +47,7 @@ class Base : public StateObject<Base>, public std::enable_shared_from_this<Base>
 
 	void die(GameState &state, bool collapse);
 
+	bool acontainmentEmpty(GameState &state);
 	sp<Facility> getFacility(Vec2<int> pos) const;
 	void startingBase(GameState &state);
 	BuildError canBuildFacility(StateRef<FacilityType> type, Vec2<int> pos,
