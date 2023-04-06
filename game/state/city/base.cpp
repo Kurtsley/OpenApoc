@@ -401,13 +401,13 @@ bool Base::acontainmentEmpty(GameState &state)
 		if (f->type->capacityType == FacilityType::Capacity::Aliens)
 		{
 			auto facility = f;
-			if (getCapacityUsed(state, facility->type->capacityType) == 0)
+			if (getCapacityUsed(state, facility->type->capacityType) != 0)
 			{
-				return true;
+				return false;
 			}
 		}
 	}
-	return false;
+	return true;
 }
 
 void Base::destroyFacility(GameState &state, Vec2<int> pos)
