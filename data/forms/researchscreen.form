@@ -106,7 +106,7 @@
       <scroll id="MANUFACTURE_QUANTITY_SLIDER">
         <position x="261" y="243"/>
         <size width="148" height="16"/>
-        <range min="1" max="50"/>
+        <range min="1" max="51"/>
       </scroll>
       <graphicbutton id="MANUFACTURE_QUANTITY_DOWN" scrollprev="MANUFACTURE_QUANTITY_SLIDER">
         <position x="247" y="241"/>
@@ -130,6 +130,17 @@
         <alignment horizontal="left" vertical="centre"/>
         <font>smalfont</font>
       </label>
+	  <checkbox id="AUTO_SELL">
+		  <position x="500" y="243"/>
+		  <size width="120" height="16"/>
+		  <image>BUTTON_CHECKBOX_FALSE</image>
+		  <imagechecked>BUTTON_CHECKBOX_TRUE</imagechecked>
+		  <label text="Auto-sell">
+			  <position x="24" y="0"/>
+			  <font>smalfont</font>
+			  <size width="90" height="16"/>
+		  </label>
+	  </checkbox>
       <label id="TEXT_TOTAL_SKILL" text="Total Skill: 0">
         <position x="232" y="451"/>
         <size width="354" height="10"/>

@@ -13,6 +13,7 @@
 #include "game/state/rules/city/vehicletype.h"
 #include "game/state/shared/organisation.h"
 #include "library/strings_format.h"
+#include <framework/configfile.h>
 
 namespace OpenApoc
 {
@@ -336,8 +337,18 @@ void Lab::setQuantity(StateRef<Lab> lab, unsigned quantity)
 		LogError("Cannot set goal for a research lab");
 	else
 	{
-		LogAssert(quantity >= 1 && quantity <= 50);
-		lab->manufacture_goal = lab->manufacture_done + quantity;
+		LogAssert(quantity >= 1 && quantity <= 51);
+		// Unlimited manufacturing
+		if (config().getBool("OpenApoc.NewFeature.InfiniteAutoSell") && quantity == 51)
+		{
+			lab->manufacture_goal = 999;
+		}
+		
+		// Set goal to current done + quantity (so we can set a goal of 1 to start
+		else
+		{
+			lab->manufacture_goal = lab->manufacture_done + quantity;
+		}
 	}
 }
 
@@ -449,6 +460,8 @@ void Lab::update(unsigned int ticks, StateRef<Lab> lab, sp<GameState> state)
 					// Add item to base
 					bool found = false;
 					UString item_name;
+					auto &economy = state->economy[lab->current_project->itemId];
+					auto player = state->getPlayer();
 					for (auto &base : state->player_bases)
 					{
 						for (auto &facility : base.second->facilities)
@@ -460,11 +473,22 @@ void Lab::update(unsigned int ticks, StateRef<Lab> lab, sp<GameState> state)
 								{
 									case ResearchTopic::ItemType::VehicleEquipment:
 									{
-										base.second->inventoryVehicleEquipment[lab->current_project
-										                                           ->itemId] =
-										    base.second->inventoryVehicleEquipment
-										        [lab->current_project->itemId] +
-										    1;
+										// Sell upon completion
+										if (config().getBool("OpenApoc.NewFeature.InfiniteAutoSell"))
+										{
+											LogWarning("Auto-selling %s: %d", lab->current_project->itemId, economy.currentPrice);
+											LogWarning("Auto-selling %s: %d", lab->current_project->itemId, economy.currentPrice);
+											player->balance += economy.currentPrice;
+										}
+										else
+										{
+											base.second->inventoryVehicleEquipment
+											    [lab->current_project->itemId] =
+											    base.second->inventoryVehicleEquipment
+											        [lab->current_project->itemId] +
+											    1;
+										}
+										
 									}
 									break;
 									case ResearchTopic::ItemType::VehicleEquipmentAmmo:
@@ -515,7 +539,11 @@ void Lab::update(unsigned int ticks, StateRef<Lab> lab, sp<GameState> state)
 							break;
 					}
 
-					lab->manufacture_done++;
+					// Infinite production
+					if (!config().getBool("OpenApoc.NewFeature.InfiniteAutoSell"))
+					{
+						lab->manufacture_done++;
+					}
 
 					if (lab->manufacture_done >= lab->manufacture_goal)
 					{

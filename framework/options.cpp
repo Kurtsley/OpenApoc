@@ -130,6 +130,7 @@ void dumpOptionsToLog()
 	dumpOption(optionAutoReload);
 	dumpOption(optionLeftClickIcon);
 	dumpOption(optionBattlescapeVertScroll);
+	dumpOption(optionInfiniteAutoSell);
 
 	dumpOption(optionStunHostileAction);
 	dumpOption(optionRaidHostileAction);
@@ -409,6 +410,8 @@ ConfigOptionBool optionLeftClickIcon("OpenApoc.NewFeature", "LeftClickIconEquip"
 ConfigOptionBool optionBattlescapeVertScroll("OpenApoc.NewFeature", "BattlescapeVertScroll",
                                              "Mousewheel changes vertical level in battlescape",
                                              true);
+ConfigOptionBool optionInfiniteAutoSell("OpenApoc.NewFeature", "InfiniteAutoSell", 
+                                              "Allows infinite manufacturing and auto-sell", false);
 
 ConfigOptionBool optionStunHostileAction("OpenApoc.Mod", "StunHostileAction",
                                          "Stunning hurts relationships", false);

@@ -18,6 +18,8 @@
 #include "game/ui/base/researchselect.h"
 #include "game/ui/components/controlgenerator.h"
 #include "library/strings_format.h"
+#include <forms/checkbox.h>
+#include <framework/configfile.h>
 
 namespace OpenApoc
 {
@@ -262,7 +264,6 @@ void ResearchScreen::eventOccurred(Event *e)
 					    form->findControlTyped<ScrollBar>("MANUFACTURE_QUANTITY_SLIDER");
 					auto manufacturing_quantity = form->findControlTyped<Label>("TEXT_QUANTITY");
 					auto quantity = manufacturing_scrollbar->getValue();
-
 					Lab::setQuantity(this->viewFacility->lab, quantity);
 					this->updateProgressInfo();
 				}
@@ -486,7 +487,7 @@ void ResearchScreen::updateProgressInfo()
 		completionPercent->setText("");
 	}
 	auto manufacture_bg = form->findControlTyped<Graphic>("MANUFACTURE_BG");
-
+	auto manufacture_auto_sell = form->findControlTyped<CheckBox>("AUTO_SELL");
 	auto manufacturing_scrollbar = form->findControlTyped<ScrollBar>("MANUFACTURE_QUANTITY_SLIDER");
 	auto manufacturing_scroll_left =
 	    form->findControlTyped<GraphicButton>("MANUFACTURE_QUANTITY_DOWN");
@@ -497,6 +498,7 @@ void ResearchScreen::updateProgressInfo()
 	if (this->viewFacility && this->viewFacility->lab->current_project &&
 	    this->viewFacility->lab->current_project->type == ResearchTopic::Type::Engineering)
 	{
+		manufacture_auto_sell->setVisible(false);
 		manufacture_bg->setVisible(true);
 		manufacturing_ntomake->setVisible(true);
 		manufacturing_quantity->setVisible(true);
@@ -504,7 +506,19 @@ void ResearchScreen::updateProgressInfo()
 		manufacturing_scroll_left->setVisible(true);
 		manufacturing_scroll_right->setVisible(true);
 		manufacturing_scrollbar->setValue(this->viewFacility->lab->getQuantity());
-		manufacturing_quantity->setText(format("%d", this->viewFacility->lab->getQuantity()));
+		
+		if (config().getBool("OpenApoc.NewFeature.InfiniteAutoSell") && this->viewFacility->lab->getQuantity() == 999)
+		{
+			manufacturing_quantity->setText("INF");
+			manufacturing_ntomake->setText("INF");
+			manufacture_auto_sell->setVisible(true);
+			manufacture_auto_sell->setChecked(false);
+		}
+		else
+		{
+			manufacturing_ntomake->setText("Number to make");
+			manufacturing_quantity->setText(format("%d", this->viewFacility->lab->getQuantity()));
+		}
 	}
 	else
 	{
