@@ -105,14 +105,15 @@ void AlertScreen::eventOccurred(Event *e)
 
 			// send agents on foot
 			bool useTaxi = config().getBool("OpenApoc.NewFeature.AllowSoldierTaxiUse");
+			bool useTeleporter = config().getBool("OpenApoc.NewFeature.AllowManualCityTeleporters");
 			for (auto &agent : agentAssignment->getSelectedAgents())
 			{
 				if (!agent->currentVehicle)
 				{
 					++building->pendingInvestigatorCount;
-					agent->setMission(*state,
-					                  AgentMission::investigateBuilding(
-					                      *state, *agent, {state.get(), building}, false, useTaxi));
+					agent->setMission(*state, AgentMission::investigateBuilding(
+					                              *state, *agent, {state.get(), building},
+					                              useTeleporter, useTaxi));
 				}
 			}
 

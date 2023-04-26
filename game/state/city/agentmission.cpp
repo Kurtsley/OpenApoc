@@ -392,6 +392,10 @@ void AgentMission::start(GameState &state, Agent &a)
 					                                  {&state, a.shared_from_this()}, true));
 					a.recentlyTransferred = false;
 				}
+				if (this->targetBuilding->detected && a.owner == state.getPlayer())
+				{
+					this->targetBuilding->decreasePendingInvestigatorCount(state);
+				}
 				return;
 			}
 			// Can teleport there?
