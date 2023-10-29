@@ -1013,25 +1013,60 @@ void AEquipScreen::populateInventoryItemsBase()
 
 void AEquipScreen::populateInventoryItemsVehicle()
 {
-	// Expecting to have an agent
+	// Expecting to have an agent and that agent to have a base
 	auto currentAgent = selectedAgents.front();
 
 	// The gap between the end of one inventory image and the start of the next
 	static const int INVENTORY_IMAGE_X_GAP = 4;
 	Vec2<int> inventoryPosition = inventoryControl->Location + formMain->Location;
 
-	sp<Vehicle> vehicle = getAgentVehicle(currentAgent);
-	auto itemsOnVehicle = vehicleItems[vehicle];
+	// Find current vehicle
+	StateRef<Vehicle> vehicle = getAgentVehicle(currentAgent);
 
-	for (auto &item : itemsOnVehicle)
+	for (auto &invPair : vehicle->inventoryAgentEquipment)
 	{
-		auto &equipmentImage = item->type->equipscreen_sprite;
+		StateRef<AEquipmentType> type = {state.get(), invPair.first};
+		// Find the item count
+		int count = 0;
+		int ammoRemaining = 0;
+		if (type->type == AEquipmentType::Type::Ammo)
+		{
+			count = invPair.second / type->max_ammo;
+			ammoRemaining = invPair.second - count * type->max_ammo;
+			if (ammoRemaining > 0)
+			{
+				count++;
+			}
+		}
+		else
+		{
+			count = invPair.second;
+		}
+
+		if (count == 0)
+		{
+			continue;
+		}
+
+		auto &equipmentImage = type->equipscreen_sprite;
 		Vec2<int> inventoryEndPosition = inventoryPosition;
 		inventoryEndPosition.x += equipmentImage->size.x;
 		inventoryEndPosition.y += equipmentImage->size.y;
 
+		auto equipment = mksp<AEquipment>();
+		equipment->type = type;
+		equipment->armor = type->armor;
+		if (count == 1 && ammoRemaining > 0)
+		{
+			equipment->ammo = ammoRemaining;
+		}
+		else if (type->ammo_types.empty())
+		{
+			equipment->ammo = type->max_ammo;
+		}
+
 		inventoryItems.push_back(
-		    std::make_tuple(Rect<int>{inventoryPosition, inventoryEndPosition}, 0, item));
+		    std::make_tuple(Rect<int>{inventoryPosition, inventoryEndPosition}, count, equipment));
 
 		inventoryPosition.x += INVENTORY_IMAGE_X_GAP + equipmentImage->size.x;
 	}
@@ -1184,10 +1219,39 @@ void AEquipScreen::removeItemFromInventoryBuilding(sp<AEquipment> item)
 
 void AEquipScreen::removeItemFromInventoryVehicle(sp<AEquipment> item)
 {
-	sp<Vehicle> vehicle = getAgentVehicle(selectedAgents.front());
+	// Expecting to have an agent in a base
+	auto currentAgent = selectedAgents.front();
 
-	vehicleItems[vehicle].erase(
-	    std::find(vehicleItems[vehicle].begin(), vehicleItems[vehicle].end(), item));
+	// Find current vehicle
+	StateRef<Vehicle> vehicle = getAgentVehicle(currentAgent);
+
+	// Remove item from vehicle
+	if (item->type->type == AEquipmentType::Type::Ammo)
+	{
+		vehicle->inventoryAgentEquipment[item->type->id] -= item->ammo;
+	}
+	else
+	{
+		vehicle->inventoryAgentEquipment[item->type->id]--;
+	}
+
+	// If it's a weapon try to load it
+	if (item->type->type == AEquipmentType::Type::Weapon)
+	{
+		auto it = item->type->ammo_types.rbegin();
+		while (it != item->type->ammo_types.rend())
+		{
+			if (vehicle->inventoryAgentEquipment[(*it).id] > 0)
+			{
+				int count = std::min((*it)->max_ammo, (int)vehicle->inventoryAgentEquipment[(*it).id]);
+				vehicle->inventoryAgentEquipment[(*it).id] -= count;
+				item->ammo = count;
+				item->payloadType = *it;
+				break;
+			}
+			it++;
+		}
+	}
 }
 
 void AEquipScreen::addItemToInventory(sp<AEquipment> item)
@@ -1652,13 +1716,35 @@ void AEquipScreen::addItemToInventoryVehicle(sp<AEquipment> item)
 	// Expecting to have an agent
 	auto currentAgent = selectedAgents.front();
 
-	vehicleItems[getAgentVehicle(currentAgent)].push_back(item);
+	// Find current vehicle
+	StateRef<Vehicle> vehicle = getAgentVehicle(currentAgent);
+
+	// Unload ammunition and add it too
+	sp<AEquipment> ammo = nullptr;
+	if (item->payloadType)
+	{
+		ammo = mksp<AEquipment>();
+		ammo->type = item->payloadType;
+		ammo->ammo = item->ammo;
+		item->ammo = 0;
+		item->payloadType.clear();
+		addItemToInventoryVehicle(ammo);
+	}
+
+	if (item->type->type == AEquipmentType::Type::Ammo)
+	{
+		vehicle->inventoryAgentEquipment[item->type->id] += item->ammo;
+	}
+	else
+	{
+		vehicle->inventoryAgentEquipment[item->type->id]++;
+	}
 }
 
 void AEquipScreen::closeScreen()
 {
 	// Try to dump gear
-	if (config().getBool("OpenApoc.NewFeature.StoreDroppedEquipment"))
+	if (config().getBool("OpenApoc.NewFeature.StoreDroppedEquipment") && !config().getBool("OpenApoc.NewFeature.CraftPool"))
 	{
 		for (auto &entry : vehicleItems)
 		{
@@ -1933,7 +2019,7 @@ void AEquipScreen::attemptCloseScreen()
 			break;
 		}
 	}
-	if (!empty)
+	if (!empty && !config().getBool("OpenApoc.NewFeature.CraftPool"))
 	{
 		fw().stageQueueCommand(
 		    {StageCmd::Command::PUSH,

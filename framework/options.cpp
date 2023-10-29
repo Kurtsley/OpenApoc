@@ -136,6 +136,7 @@ void dumpOptionsToLog()
 	dumpOption(optionBattlescapeVertScroll);
 	dumpOption(optionSingleSquadSelect);
 	dumpOption(optionATVUFOMission);
+	dumpOption(optionCraftPool);
 
 	dumpOption(optionStunHostileAction);
 	dumpOption(optionRaidHostileAction);
@@ -428,6 +429,8 @@ ConfigOptionBool
     optionATVUFOMission("OpenApoc.NewFeature", "ATVUFOMission",
                         "Allow ATV vehicles to initiate UFO missions (and recover vehicles)",
                         false);
+ConfigOptionBool optionCraftPool("OpenApoc.NewFeature", "CraftPool",
+                                 "Each craft acts as a mobile base and can store equipment", false);
 
 ConfigOptionBool optionStunHostileAction("OpenApoc.Mod", "StunHostileAction",
                                          "Stunning hurts relationships", false);

@@ -114,6 +114,7 @@ extern ConfigOptionBool optionLeftClickIcon;
 extern ConfigOptionBool optionBattlescapeVertScroll;
 extern ConfigOptionBool optionSingleSquadSelect;
 extern ConfigOptionBool optionATVUFOMission;
+extern ConfigOptionBool optionCraftPool;
 
 extern ConfigOptionBool optionStunHostileAction;
 extern ConfigOptionBool optionRaidHostileAction;

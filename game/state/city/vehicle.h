@@ -186,6 +186,10 @@ class Vehicle : public StateObject<Vehicle>,
 	Vec3<int> getPreferredPosition(Vec3<int> position) const;
 	Vec3<int> getPreferredPosition(int x, int y, int z = 0) const;
 
+	// Agent equipment in vehicle
+	std::map<UString, unsigned> inventoryAgentEquipment;
+
+
 	void equipDefaultEquipment(GameState &state);
 
 	StateRef<VehicleType> type;
