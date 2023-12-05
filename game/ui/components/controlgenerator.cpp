@@ -131,17 +131,19 @@ VehicleTileInfo ControlGenerator::createVehicleInfo(GameState &state, sp<Vehicle
 
 	float maxHealth;
 	float currentHealth;
+
+	maxHealth = v->getMaxHealth();
+	currentHealth = v->getHealth();
+	t.shield = false;
+
 	if (v->getShield() != 0)
 	{
-		maxHealth = v->getMaxShield();
-		currentHealth = v->getShield();
+		if (currentHealth == maxHealth)
+		{
+			maxHealth = v->getMaxShield();
+			currentHealth = v->getShield();
+		}
 		t.shield = true;
-	}
-	else
-	{
-		maxHealth = v->getMaxHealth();
-		currentHealth = v->getHealth();
-		t.shield = false;
 	}
 
 	t.healthProportion = currentHealth / maxHealth;
@@ -459,16 +461,18 @@ AgentInfo ControlGenerator::createAgentInfo(GameState &state, sp<Agent> a,
 	i.shield = a->getMaxShield(state) > 0;
 	float maxHealth;
 	float currentHealth;
+
+	currentHealth = a->getHealth();
+	maxHealth = a->getMaxHealth();
 	if (i.shield)
 	{
-		currentHealth = a->getShield(state);
-		maxHealth = a->getMaxShield(state);
+		if (currentHealth == maxHealth)
+		{
+			currentHealth = a->getShield(state);
+			maxHealth = a->getMaxShield(state);
+		}
 	}
-	else
-	{
-		currentHealth = a->getHealth();
-		maxHealth = a->getMaxHealth();
-	}
+
 	i.healthProportion = maxHealth == 0.0f ? 0.0f : currentHealth / maxHealth;
 	// Set state that is used in battle
 	if (a->unit)
