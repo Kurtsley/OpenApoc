@@ -44,6 +44,17 @@
 					<size width="280" height="1"/>
 					<alignment horizontal="centre"/>
 				</graphic>
+				<label id="EXPERIMENTAL_TEXT" text="Experimental Options">
+					<position x="305" y="392"/>
+					<font>smalfont</font>
+					<size width="270" height="16"/>
+					<alignment horizontal="centre" vertical="centre"/>
+				</label>
+				<graphic>
+					<image>city/menu-hr.png</image>
+					<position x="315" y="410"/>
+					<size width="245" height="1"/>
+				</graphic>
 				<!-- TODO: Add this option
 				<checkbox id="VANILLA_TOGGLE">
 					<position x="40" y="296"/>
@@ -57,7 +68,7 @@
 					</label>
 				</checkbox> -->
 				<checkbox id="DEBUGVIS_TOGGLE">
-					<position x="40" y="316"/>
+					<position x="40" y="294"/>
 					<size width="270" height="16"/>
 					<image>BUTTON_CHECKBOX_FALSE</image>
 					<imagechecked>BUTTON_CHECKBOX_TRUE</imagechecked>
@@ -68,7 +79,7 @@
 					</label>
 				</checkbox>
 				<checkbox id="SCROLLSOUND_TOGGLE">
-					<position x="40" y="336"/>
+					<position x="40" y="314"/>
 					<size width="250" height="16"/>
 					<image>BUTTON_CHECKBOX_FALSE</image>
 					<imagechecked>BUTTON_CHECKBOX_TRUE</imagechecked>
@@ -79,7 +90,7 @@
 					</label>
 				</checkbox>
 				<checkbox id="MOREICONS_TOGGLE">
-					<position x="40" y="356"/>
+					<position x="40" y="334"/>
 					<size width="250" height="16"/>
 					<image>BUTTON_CHECKBOX_FALSE</image>
 					<imagechecked>BUTTON_CHECKBOX_TRUE</imagechecked>
@@ -90,7 +101,7 @@
 					</label>
 				</checkbox>
 				<checkbox id="ADVINVENTORY_TOGGLE">
-					<position x="40" y="376"/>
+					<position x="40" y="354"/>
 					<size width="250" height="16"/>
 					<image>BUTTON_CHECKBOX_FALSE</image>
 					<imagechecked>BUTTON_CHECKBOX_TRUE</imagechecked>
@@ -101,7 +112,7 @@
 					</label>
 				</checkbox>
 				<checkbox id="TEMPLATES_TOGGLE">
-					<position x="40" y="396"/>
+					<position x="40" y="374"/>
 					<size width="250" height="16"/>
 					<image>BUTTON_CHECKBOX_FALSE</image>
 					<imagechecked>BUTTON_CHECKBOX_TRUE</imagechecked>
@@ -112,11 +123,22 @@
 					</label>
 				</checkbox>
 				<checkbox id="SEEDRNG_TOGGLE">
-					<position x="40" y="416"/>
+					<position x="40" y="394"/>
 					<size width="250" height="16"/>
 					<image>BUTTON_CHECKBOX_FALSE</image>
 					<imagechecked>BUTTON_CHECKBOX_TRUE</imagechecked>
 					<label text="Seed RNG on game start">
+						<position x="24" y="0"/>
+						<font>smalfont</font>
+						<size width="250" height="16"/>
+					</label>
+				</checkbox>
+				<checkbox id="NEWTPS_TOGGLE">
+					<position x="311" y="416"/>
+					<size width="250" height="16"/>
+					<image>BUTTON_CHECKBOX_FALSE</image>
+					<imagechecked>BUTTON_CHECKBOX_TRUE</imagechecked>
+					<label text="Use new TPS calculation">
 						<position x="24" y="0"/>
 						<font>smalfont</font>
 						<size width="250" height="16"/>

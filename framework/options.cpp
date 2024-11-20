@@ -191,6 +191,8 @@ void dumpOptionsToLog()
 	dumpOption(modPath);
 
 	dumpOption(asyncLoading);
+
+	dumpOption(newTPS);
 }
 
 #ifndef DATA_DIRECTORY
@@ -546,5 +548,6 @@ ConfigOptionString modList("Game", "Mods",
 ConfigOptionString modPath("Game", "ModPath", "Directory containing mods", "./data/mods");
 ConfigOptionBool asyncLoading("Game", "ASyncLoading",
                               "Load in background while displaying animated loading screen", true);
+ConfigOptionBool newTPS("Experimental", "NewTPS", "Use new TPS calcs", false);
 
 } // namespace OpenApoc::Options

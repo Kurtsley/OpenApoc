@@ -170,4 +170,6 @@ extern ConfigOptionString modPath;
 
 extern ConfigOptionBool asyncLoading;
 
+extern ConfigOptionBool newTPS;
+
 } // namespace OpenApoc::Options

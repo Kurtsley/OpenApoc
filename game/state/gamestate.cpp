@@ -1077,6 +1077,8 @@ void OpenApoc::GameState::cleanUpDeathNote()
 
 void GameState::update(unsigned int ticks)
 {
+	gameTime.modifyTPS();
+
 	if (this->current_battle)
 	{
 		this->current_battle->update(*this, ticks);

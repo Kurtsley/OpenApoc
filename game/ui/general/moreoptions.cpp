@@ -92,6 +92,7 @@ static const std::list<std::pair<UString, UString>> vanillaList = {
     {"OpenApoc.NewFeature", "SeedRng"},
     {"OpenApoc.NewFeature", "AutoReload"},
     {"OpenApoc.Mod", "RaidHostileAction"},
+    {"Experimental", "newTPS"},
 };
 
 // By default, cityscape and battlescape options list treat all options as boolean values
@@ -583,6 +584,8 @@ void MoreOptions::begin()
 	    ->setChecked(config().getBool("OpenApoc.NewFeature.EnableAgentTemplates"));
 	menuform->findControlTyped<CheckBox>("SEEDRNG_TOGGLE")
 	    ->setChecked(config().getBool("OpenApoc.NewFeature.SeedRng"));
+	menuform->findControlTyped<CheckBox>("NEWTPS_TOGGLE")
+	    ->setChecked(config().getBool("Experimental.NewTPS"));
 }
 
 void MoreOptions::pause() {}
@@ -606,6 +609,8 @@ void MoreOptions::finish()
 	             menuform->findControlTyped<CheckBox>("TEMPLATES_TOGGLE")->isChecked());
 	config().set("OpenApoc.NewFeature.SeedRng",
 	             menuform->findControlTyped<CheckBox>("SEEDRNG_TOGGLE")->isChecked());
+	config().set("Experimental.NewTPS",
+	             menuform->findControlTyped<CheckBox>("NEWTPS_TOGGLE")->isChecked());
 	saveLists();
 }
 
