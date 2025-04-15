@@ -17,7 +17,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
+set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
 include(ccache)
 
@@ -34,7 +34,7 @@ option(ENABLE_TESTS "Build some unit tests" ON)
 option(USE_PCH "Enable precompiled header use during build" OFF)
 option(EXTRACT_DATA "Run the data extractor as part of the default target" ON)
 
-set(CD_PATH ${CMAKE_SOURCE_DIR}/data/cd.iso CACHE STRING "Path to cd.iso (used
+set(CD_PATH ${PROJECT_SOURCE_DIR}/data/cd.iso CACHE STRING "Path to cd.iso (used
 by test and extractor")
 
 if (${EXTRACT_DATA} AND NOT EXISTS ${CD_PATH})
@@ -105,7 +105,7 @@ if ("${CMAKE_C_COMPILER_ID}" STREQUAL "Clang")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Qunused-arguments")
 endif()
 
-set(GLM_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/dependencies/glm)
+set(GLM_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/dependencies/glm)
 MARK_AS_ADVANCED(GLM_INCLUDE_DIR)
 
 add_subdirectory(library)
@@ -126,7 +126,10 @@ set(MACOSX_BUNDLE_BUNDLE_NAME OpenApoc)
 
 ADD_EXECUTABLE(${CMAKE_PROJECT_NAME} MACOSX_BUNDLE game/main.cpp ${sources}
 		${FRAMEWORK_SOURCES})
-else()
+elseif (ANDROID)
+	add_library(${CMAKE_PROJECT_NAME} SHARED game/main.cpp ${sources}
+	${FRAMEWORK_SOURCES})
+else ()
 ADD_EXECUTABLE(${CMAKE_PROJECT_NAME} game/main.cpp ${sources}
 		${FRAMEWORK_SOURCES})
 endif()
@@ -152,7 +155,7 @@ INCLUDE_DIRECTORIES(${CMAKE_BINARY_DIR})
 SET( EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin )
 
 
-if (NOT APPLE)
+if (NOT CMAKE_CROSSCOMPILING)
 		install(TARGETS ${CMAKE_PROJECT_NAME}
 				RUNTIME DESTINATION bin)
 		install(DIRECTORY ${CMAKE_SOURCE_DIR}data/ DESTINATION share/OpenApoc)

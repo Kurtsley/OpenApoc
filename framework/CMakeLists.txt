@@ -215,6 +215,23 @@ set(BOOST_VERSION 1.50)
 
 target_compile_definitions(OpenApoc_Framework PUBLIC "-DUSE_STD_FILESYSTEM")
 
+if (ANDROID)
+	set(BOOST_ROOT "${CMAKE_SOURCE_DIR}/app/jni/boost")
+	set(Boost_NO_SYSTEM_PATHS ON)
+	set(Boost_USE_STATIC_LIBS ON)
+	set(Boost_USE_MULTITHREADED ON)
+	set(Boost_COMPILER "-clang")
+
+	find_package(Boost REQUIRED COMPONENTS filesystem system program_options locale)
+
+	if (NOT Boost_FOUND)
+		message(FATAL_ERROR "Boost not found")
+	endif ()
+
+	target_include_directories(OpenApoc_Framework PRIVATE ${Boost_INCLUDE_DIRS})
+	target_link_libraries(OpenApoc_Framework PRIVATE ${Boost_LIBRARIES})
+endif ()
+
 find_package(Boost ${BOOST_VERSION} REQUIRED COMPONENTS ${BOOST_PACKAGES})
 target_link_libraries(OpenApoc_Framework PUBLIC ${Boost_LIBRARIES})
 target_include_directories(OpenApoc_Framework PUBLIC ${Boost_INCLUDE_DIRS})
