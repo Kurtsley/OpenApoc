@@ -7,11 +7,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.9)
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
-if (WIN32)
-	find_package(Boost REQUIRED COMPONENTS date_time)
-else()
-	find_package(Boost REQUIRED)
-endif()
+find_package(Boost REQUIRED)
 
 set (GAMESTATE_SOURCE_FILES
 	battle/ai/aidecision.cpp
@@ -181,7 +177,7 @@ set (GAMESTATE_HEADER_FILES
 	gamestate_serialize.h
 	gamestate_serialize_generated.h
 	gametime.h
-	gametime_facet.h
+	
 	luagamestate.h
 	luagamestate_support.h
 	luagamestate_support_generated.h

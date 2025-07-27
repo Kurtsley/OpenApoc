@@ -233,7 +233,7 @@ class ConfigFileImpl
 
 			auto optionName = splitString[splitString.size() - 1];
 			UString configFileLine =
-			    format("%s=%s", optionName, std::visit(ToStringVisitor(), optionPair.second));
+			    std::format("%s=%s", optionName, std::visit(ToStringVisitor(), optionPair.second));
 			configFileContents[sectionName].push_back(configFileLine);
 		}
 
